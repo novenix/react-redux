@@ -11,22 +11,54 @@ import {render} from 'react-dom'
 import Home from '../pages/containers/home'
 //importar los datos de los videos, para lectura desde json(objetos)
  import data from './../api.json'
+// importar el centro de todas las cosas
+import {createStore}from 'redux'
+// importar high order component: sirve de suscribe
+// privider, poner data a la app
+import {Provider}from 'react-redux'
+// omportar reducer
+import reducer from '../reducers/data'
+
+// definir modelo de datos y como los va a consumir
+const initialState={
+    // puede obtener todos los datosy 
+    data: {
+        // lo que corresponde a la api, lo que llega de la datra
+        ...data,
+        // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
+        // para buscar
+        search:[],
+    }
+};
+
+// el create store recibe 3 parametros:
+    // reducer,initial state,enhancer
+    // reducer, como llega la info,herramientas de desarrollo
+const store =createStore(
+    // reducer,
+    reducer,
+    // initial
+    initialState,
+    // enhancer
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+
+)
+console.log(store.getState())
 // import Categorias from './src/categorias/categorias'
 // importar html
 const homeContainer=document.getElementById('home-container')
-//home solo renderiza container home
-//crear lugar de dom en el html el id llamarlo en 
-//parametros:(que voy a renderizar , donde lo hare)
-//rends= es lo que se va a renderizar
-//const rend=<h1>hola, esto es NOVE-VIDEO, bienvenido</h1>
-//lo que se va  arenderizar puede ser un elemento de react o un componente de react
-//ReactDOM.render(rend,app)
-//para solo llamar render solo se debe escribir render
-//se pueden tener propiedades y enviarla
-//si llega un audio o video se pone type="video"
-//render(<Media type="video" title='Mi Primer video Nove-video' author="Nicolas Torres" image="./images/covers/logo-og.png" btonTxt="entrar"/>,app)
-//ir a componente
-// que tenga media con toda la playlist y renderize
-// renderizado con react Dom
-render(<Home data={data}/>,homeContainer)
-// render(<Categorias data={data}/>,app)
+
+// en react
+// render(<Home  data={data}/>,homeContainer)
+
+// ya no se envia la data, solo envia store que ya la contiene
+// componente de orden superior
+//hoc: heredan cosas a los componentes hijos-decorador, reemplaza mixin de react
+// pone el store
+render(
+    <Provider store={store}> 
+        {/* <p>hola mundo</p> */}
+        <Home  />
+    </Provider>,homeContainer)
+
+

@@ -26,6 +26,7 @@ function handleSubmit(event){
         type:"ADD_SONG",
         // enviamos objeto payload con titulo,es mejor enviar objeto 
         // envia title:title que es igual gracias a ecma a solo title
+        // esto es un action
         payload:{
             title,
         }
@@ -42,12 +43,29 @@ const initialState=[
     },
     {"title":"Echame la culpa",}
 ]
+// crear reducer
+const reducer =function(state,action){
+    // recibe estado y accion
+    // el type es parametro obligatorio en una accion
+    switch(action.type){
+        // llega el addsong directamente de cuando se escribe
+        case "ADD_SONG":
+            // retornar nuevo estado
+            // [estado anterior, nuevo objeto con datos que están llegando]
+            // al retornar debe ser objeto, el payload ya es un objeto
+            return [...state, action.payload]
+        
+        default:
+            return state
+    }
+
+}
 // crear store
 // reducer es una funcion pura
 // el store es el centro de la verdad
 const store=createStore(
     // reducer: el reducer deberia retornar estado
-    (state)=>state,
+    reducer,
     // initial state, modelado de datos inicial: el json con categorias, con id titulo, y una playlist
     // estado inicial arriba
     initialState,
@@ -55,20 +73,33 @@ const store=createStore(
     // se puede debugear con las devtools
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 )
-// hacer referencia al elemento playlist del html
-const $container = document.getElementById("playlist")
-// poner la playlist dentro de una constante
-const playlist = store.getState();
-// iterar la lista, desde map o foreach
-playlist.forEach((item)=>{
-    // crear elemento html, diferente a react
-    const template=document.createElement('p')
-    // contenido al parrafo, nombre de cada cancio
-    template.textContent=item.title;
-    // imprimir dentro del container
+function render(){
+    // hacer referencia al elemento playlist del html
+    const $container = document.getElementById("playlist")
+    // poner la playlist dentro de una constante
+    const playlist = store.getState();
+    // borrar lo que ya estaba y actualizar con la nueva lista
+    $container.innerHTML='';
+    // iterar la lista, desde map o foreach
+    playlist.forEach((item)=>{
+        // crear elemento html, diferente a react
+        const template=document.createElement('p')
+        // contenido al parrafo, nombre de cada cancio
+        template.textContent=item.title;
+        // imprimir dentro del container
 
-    // añadir nuevos hihos, el nuevo hijo es el template
-    $container.appendChild(template);
-})
+        // añadir nuevos hihos, el nuevo hijo es el template
+        $container.appendChild(template);
+    })
+}
+render();
+function handleChange(){
+    // controlar el cambio 
+    // llamar render cada vez que se actualiza la app
+    render();
+}
+// subscribe es para mostrar en pantalla las acciones que tienen lugar en el stroe
+// recibe un solo parametro que es una funcion
+store.subscribe(handleChange)
 // obtener el state para imporimirlo
 console.log(store.getState())

@@ -1,13 +1,26 @@
 import React,{Component} from 'react'
 import Search from '../components/search'
+// con connect puede tener dispatch
+import {connect} from 'react-redux'
+
 class SearchContainer extends Component{
     state={
-        value:'luis fonsi'
+        value:'Luis Fonsi'
     }
     handleSubmit=event=>{
         // prevenir que la pagina recarge
         event.preventDefault();
         console.log(this.input.value,'submit')
+        // crear la accion para buscar video
+        // se le envia la accion, type por minimo
+        this.props.dispatch({
+            type:'SEARCH_VIDEO',
+            // envia objeto payload
+            payload:{
+                query:this.input.value,
+            }
+            
+        })
     }
     // funcion que recibe el elemento html como parametro
     // lo maeja
@@ -37,4 +50,8 @@ class SearchContainer extends Component{
         )
     }
 }
-export default SearchContainer
+// conectar, por que es el que va a realizar una accion,
+// como no vamos a pintar de propiedades del estado no se envia nada en connect
+// *cada vez que es el componente el que va a realizar una accion
+//  se exporta o se llama conect con programacion funcional
+export default connect() (SearchContainer)

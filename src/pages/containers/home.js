@@ -8,6 +8,10 @@ import ModalContainer from '../../widgets/containers/modal'
 import Modal from '../../widgets/components/modal'
 import HandleError from '../../errores/container/handleError'
 import VideoPlayer from '../../player/container/video-player'
+// para conectar los datos del store a un componente en especifico
+import {connect} from 'react-redux'
+
+// conectar datos en especifico del componente, solo esos datos
 class Home extends Component{
     state = {
         modalVisible:false,
@@ -38,9 +42,10 @@ class Home extends Component{
                     
                     {/* hijos del home */}
                     <Categories 
-                        
-                        // categories={this.props.data}
-                        categories={this.props.data.categories}
+                        // sin enviar la propiedad con redux, solo react seria:
+                        // categories={this.props.data.categories}
+                        // gracias a mapStateToProps:
+                        categories={this.props.categories}
 
                         // {/* pasamos el click */}
                         handleOpenModal={this.handleOpenModal}
@@ -72,5 +77,19 @@ class Home extends Component{
         )
     }
 }
-
-export default Home
+// lo que va a conectar, recibe estado y propiedades
+function mapStateToProps(state,props){
+    // recibe el estado dfe redux
+    // recube el inicial State
+    // retorna que datos quiere enviar a componente home como nuevas propiedades
+    return {
+        categories: state.data.categories
+    }
+   
+}
+// conectar datos al componente;
+// funcion que recibe parametro que pone los parametros que necesita
+// programacion funcional..
+// pasar farametros(que componetne, funcion que necesita del estado)
+// le envia una nueva propiedad al componente home, en este caso seria categories
+export default connect(mapStateToProps) (Home)
