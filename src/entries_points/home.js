@@ -9,8 +9,10 @@ import {render} from 'react-dom'
 //importar componente playlist
 // import Playlist from './src/playlist/componentes/playlist.js'
 import Home from '../pages/containers/home'
+
 //importar los datos de los videos, para lectura desde json(objetos)
- import data from './../api.json'
+//  import data from './../api.json'
+
 // importar el centro de todas las cosas
 import {createStore}from 'redux'
 // importar high order component: sirve de suscribe
@@ -19,16 +21,35 @@ import {Provider}from 'react-redux'
 // omportar reducer
 import reducer from '../reducers/data'
 
+// importar los datos normalizados para encontrar los datos mas facil
+// normalizedData ahora es es data
+import data from '../schemas/index'
+
+import Categories from '../categories/components/categories';
+
+// que hay dentro de la data ya normalizada
+console.log(data)
+
+// la data sin normalizar
+// console.log(data);
+
+
+
 // definir modelo de datos y como los va a consumir
 const initialState={
     // puede obtener todos los datosy 
     data: {
         // lo que corresponde a la api, lo que llega de la datra
-        ...data,
-        // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
+        // ...data,
+        // crear campos a los lugares para que sean usados
+        // entidades de categoria y de media
+        entities:data.entities,
+        categories:data.result.categories,
+        
+    },
+    // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
         // para buscar
-        search:[],
-    }
+    search:[]
 };
 
 // el create store recibe 3 parametros:
@@ -43,7 +64,7 @@ const store =createStore(
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 
 )
-console.log(store.getState())
+// console.log(store.getState())
 // import Categorias from './src/categorias/categorias'
 // importar html
 const homeContainer=document.getElementById('home-container')

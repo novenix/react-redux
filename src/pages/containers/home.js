@@ -49,6 +49,8 @@ class Home extends Component{
 
                         // {/* pasamos el click */}
                         handleOpenModal={this.handleOpenModal}
+                        // envia a las categories:
+                        search={this.props.search}
                         />
                     
                     
@@ -78,12 +80,27 @@ class Home extends Component{
     }
 }
 // lo que va a conectar, recibe estado y propiedades
+// envia al render?
 function mapStateToProps(state,props){
+    // necesita objetos de categorias para retornarlos
+    // revisar dentro de categories, es una lista de strigns con id's
+    console.log(categories)
+    const categories =state.data.categories.map((categoryId)=>{
+        // buscar el objeto en la categoria que esta dentro de la entitie
+        return state.data.entities.categories[categoryId]
+    })
+
     // recibe el estado dfe redux
     // recube el inicial State
     // retorna que datos quiere enviar a componente home como nuevas propiedades
     return {
-        categories: state.data.categories
+        // sin la data normalizada
+        // categories: state.data.categories,
+        // con data normalizada
+        categories: categories,
+        // tambien se puede traer search
+        // empieza como un arreglo vacio
+        search:state.search
     }
    
 }
