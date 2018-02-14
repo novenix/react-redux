@@ -32,7 +32,7 @@ class Media extends PureComponent{
         // console.log(event)
         // console.log(this.props.title)
         // le enviamos el titulo, cover autor
-        this.props.openModal(this.props)
+        this.props.openModal(this.props.id)
     }
     /////////con ecmascript 7
     // handleClick=(event)=>{

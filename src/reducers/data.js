@@ -1,38 +1,42 @@
+// importar los datos normalizados para encontrar los datos mas facil
+// normalizedData ahora es es data
+import schema from '../schemas/index'
+// form js: pasa cualquier objeto js a immutable
+import {fromJS} from 'immutable';
+// manejar el estado inicial dentro de cada reducer
+// llama a from js de immutable
+const initialState=fromJS({
+    // puede obtener todos los datosy 
+    // reducer 1
+    
+        // lo que corresponde a la api, lo que llega de la datra
+        // ...data,
+        // crear campos a los lugares para que sean usados
+        // entidades de categoria y de media
+        entities:schema.entities,
+        categories:schema.result.categories,
+        search:''
+    
+    
+});
+
+
+
+
+
 // reducers son funcion pura
 // recibe estado y accion
-function data(state,action){
+function data(state=initialState,action){
     // se define segun el tipo  de accion, que es lo que se quiere hacer
     // type es parametro obligatorio en accion
     switch (action.type){
         // MANEJAR LA ACCION SEARCH VIDEO
-        case 'SEARCH_VIDEO':{
-            // para que no se traiga todo si no se le pone nada
-            let results=[]
-            if (action.payload.query){
-                // el query es el texto que está llegando de la busqueda
-                // action.payload.query
-                // obtener una lista para hacer una busqueda pequeña
-                
-                const list=state.data.categories[2].playlist;
-                // iterar la lista, filtrarla, aca compara en cada pos de la lista buscada si coincide
-                results=list.filter((item)=>{
-                    // filter devuelve verdadero o falso
-                    // si retorna true, retorna todos los elementos de la lista
-                    
-                    // comparar nombre del autor
-                    // luis vs lui =true
-                    // comparar.includes(lo que llega)
-                    return item.author.includes(action.payload.query);
-                })
-            }
-            
-            // DEVOLVER NUEVO ESTADO
-            // como un objeto
-            // retorna lo mismo que esta dentro del estado y le añade un nuevo key, data + la busqueda
-            return {
-                ...state,
-                search:results
-            }
+        case 'SEARCH_ENTITIES':{            
+            // como el metodo es inmutable
+            // el query es el texto que está llegando de la busqueda
+            //     // action.payload.query
+            // devuelbe un nuevo mapa de inmutable
+            return state.set('search',action.payload.query)
         }
         default:
         return state

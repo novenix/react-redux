@@ -3,6 +3,9 @@ import Search from '../components/search'
 // con connect puede tener dispatch
 import {connect} from 'react-redux'
 
+import * as actions from '../../actions/index'
+import { bindActionCreators } from 'redux';
+
 class SearchContainer extends Component{
     state={
         value:'Luis Fonsi'
@@ -13,14 +16,7 @@ class SearchContainer extends Component{
         console.log(this.input.value,'submit')
         // crear la accion para buscar video
         // se le envia la accion, type por minimo
-        this.props.dispatch({
-            type:'SEARCH_VIDEO',
-            // envia objeto payload
-            payload:{
-                query:this.input.value,
-            }
-            
-        })
+        this.props.actions.searchEntities(this.input.value)
     }
     // funcion que recibe el elemento html como parametro
     // lo maeja
@@ -50,8 +46,15 @@ class SearchContainer extends Component{
         )
     }
 }
+// / recibe el parametro dispatch, retorna nuevas propiedades
+// aqui esta el sipatch del store
+function mapDispatchToProps(dispatch){
+    return{
+        actions:bindActionCreators(actions,dispatch)
+    }
+}
 // conectar, por que es el que va a realizar una accion,
 // como no vamos a pintar de propiedades del estado no se envia nada en connect
 // *cada vez que es el componente el que va a realizar una accion
 //  se exporta o se llama conect con programacion funcional
-export default connect() (SearchContainer)
+export default connect(null,mapDispatchToProps) (SearchContainer)

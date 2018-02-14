@@ -3,7 +3,7 @@
 // import React,{Component} from 'react';
 //no hay que importar component porque no es para actualizar al instante(creo)
 import React from 'react';
-import Media from './media.js'
+import MediaContainer from '../containers/media'
 import './playlist.css'
 
 //componente funcional:es en una funcion, es mejor que una clase porque no hay
@@ -28,13 +28,13 @@ function Playlist(props) {
             
             {
                 // mapear cada elemento de la playlist y hacer componentes
-                props.playlist.map((item)=>{
+                props.playlist.map((mediaId)=>{
                     //pasar los datos a media
                     //a key se le debe poner un valor dinamico, el id de cada elemento que trae
                     //ecma anterior
                     // return <Media title={item.title} author={item.author} image={item.cover} btonTxt="agregar a playlist" key={item.id} type={item.type} />
                     // ecma actual: con{...item} envia como propiedad a media cada atributo que tiene el objeto
-                    return <Media openModal={props.handleOpenModal} {...item} key={item.id} />
+                    return <MediaContainer openModal={props.handleOpenModal}  id={mediaId} key={mediaId} />
                     
                 })    
             }

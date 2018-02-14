@@ -17,22 +17,23 @@ function Categories(props){
         {
             props.search.map((item)=>{
                 // retorna ese item, debe pasarle key de cada item
-                return <Media {...item} key={item.id} />
+                // to js para pasar a objeto a javascript
+                return <Media openModal={props.handleOpenModal} {...item.toJS()} key={item.get('id')} />
             })
         }
-            {
-                // mapear categories, tiene el elemento de categoria y se lo manda a su respectiva funcion
-                props.categories.map((category)=>{
-                    // cada iterador debe tener su key
-                    return (<Category 
-                        key={category.id} 
-                        {...category}
-                        handleOpenModal={props.handleOpenModal}
-                        
-                        />)
+        {
+            // mapear categories, tiene el elemento de categoria y se lo manda a su respectiva funcion
+            props.categories.map((category)=>{
+                // cada iterador debe tener su key
+                return (<Category 
+                    key={category.get('id')} 
+                    {...category.toJS()}
+                    handleOpenModal={props.handleOpenModal}
+                    
+                    />)
 
-                })
-            }
+            })
+        }
         </div>
     )
 }

@@ -10,27 +10,34 @@ import HandleError from '../../errores/container/handleError'
 import VideoPlayer from '../../player/container/video-player'
 // para conectar los datos del store a un componente en especifico
 import {connect} from 'react-redux'
+// listas de inmutable
+import {List as list} from 'immutable'
+// importar todo lo de index
+import * as actions from '../../actions/index'
+// llamar bind action creator
+import {bindActionCreators} from 'redux'
 
 // conectar datos en especifico del componente, solo esos datos
 class Home extends Component{
-    state = {
-        modalVisible:false,
+    // state = {
+    //     modalVisible:false,
         
-    }
-    handleOpenModal=(media)=>{
-        this.setState({
-            modalVisible:true,
-            // media:media
-            media,
-        })
+    // }
+    handleOpenModal=(id)=>{
+        this.props.actions.openModal(id)
+        // this.setState({
+        //     modalVisible:true,
+        //     // media:media
+        //     media,
+        // })
     }
     handleCloseModalClick = (event)=>{
-        
-        // setear estado
-        this.setState({
-            // la visibilidad del estado es falso
-            modalVisible:false,
-        })
+        this.props.actions.closeModal()
+        // // setear estado
+        // this.setState({
+        //     // la visibilidad del estado es falso
+        //     modalVisible:false,
+        // })
     }
     
     render(){
@@ -60,15 +67,16 @@ class Home extends Component{
                     {/* contenedor modal */}
                     {/* jsx condicionales */}
                     {
-                        this.state.modalVisible &&                
+                        this.props.modal.get('visibility') &&                
                         <ModalContainer>
                             <Modal 
                                 handleClick={this.handleCloseModalClick}
                             >
                                 <VideoPlayer
                                     autoplay
-                                    src={this.state.media.src}
-                                    title={this.state.media.title}
+                                    id={this.props.modal.get('mediaId')}
+                                    // src={this.state.media.src}
+                                    // title={this.state.media.title}
                                 />
                                 
                             </Modal>                    
@@ -85,11 +93,25 @@ function mapStateToProps(state,props){
     // necesita objetos de categorias para retornarlos
     // revisar dentro de categories, es una lista de strigns con id's
     console.log(categories)
-    const categories =state.data.categories.map((categoryId)=>{
+    // mapas inmutable,de redux immutable.get()
+    const categories =state.get('data').get('categories').map((categoryId)=>{
         // buscar el objeto en la categoria que esta dentro de la entitie
-        return state.data.entities.categories[categoryId]
+        return state.get('data').get('entities').get('categories').get(categoryId)
     })
-
+    // como es imutable, el array[] es una lista
+    let searchResults=list();
+    // const con el query
+    const search=state.get('data').get('search');
+    if (search){
+        // dentro, iterar todos los elemetnos obteniendo key de media
+        // devuelve una lista de elementos de media.
+        const mediaList=state.get('data').get('entities').get('media')
+        searchResults=mediaList.filter((item)=>{
+            //  item es el elemento de media, pero con mapa de inmutalble
+            // convertirlo a lista para trabajar con immutable
+            return item.get('author').toLowerCase().includes(search.toLowerCase())
+        }).toList();
+    }
     // recibe el estado dfe redux
     // recube el inicial State
     // retorna que datos quiere enviar a componente home como nuevas propiedades
@@ -100,13 +122,23 @@ function mapStateToProps(state,props){
         categories: categories,
         // tambien se puede traer search
         // empieza como un arreglo vacio
-        search:state.search
+        search:searchResults,
+        // traer datos del modal
+        modal:state.get('modal')
     }
    
+}
+// recibe el parametro dispatch, retorna nuevas propiedades
+// aqui esta el sipatch del store
+function mapDispatchToProps(dispatch){
+    return{
+        // actions: bindActionCreators(acciones,dispatch)
+        actions: bindActionCreators(actions,dispatch)
+    }
 }
 // conectar datos al componente;
 // funcion que recibe parametro que pone los parametros que necesita
 // programacion funcional..
 // pasar farametros(que componetne, funcion que necesita del estado)
 // le envia una nueva propiedad al componente home, en este caso seria categories
-export default connect(mapStateToProps) (Home)
+export default connect(mapStateToProps,mapDispatchToProps) (Home)

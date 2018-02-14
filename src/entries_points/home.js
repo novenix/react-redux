@@ -19,16 +19,15 @@ import {createStore}from 'redux'
 // privider, poner data a la app
 import {Provider}from 'react-redux'
 // omportar reducer
-import reducer from '../reducers/data'
+import reducer from '../reducers/index'
+// funcion mapas inmutables,(mapa as pmap) para que lo tome como funcion
+import {Map as map} from 'immutable'
 
-// importar los datos normalizados para encontrar los datos mas facil
-// normalizedData ahora es es data
-import data from '../schemas/index'
 
 import Categories from '../categories/components/categories';
 
 // que hay dentro de la data ya normalizada
-console.log(data)
+// console.log(data)
 
 // la data sin normalizar
 // console.log(data);
@@ -36,21 +35,28 @@ console.log(data)
 
 
 // definir modelo de datos y como los va a consumir
-const initialState={
-    // puede obtener todos los datosy 
-    data: {
-        // lo que corresponde a la api, lo que llega de la datra
-        // ...data,
-        // crear campos a los lugares para que sean usados
-        // entidades de categoria y de media
-        entities:data.entities,
-        categories:data.result.categories,
-        
-    },
-    // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
-        // para buscar
-    search:[]
-};
+// const initialState={
+//     // puede obtener todos los datosy 
+//     // reducer 1
+//     data: {
+//         // lo que corresponde a la api, lo que llega de la datra
+//         // ...data,
+//         // crear campos a los lugares para que sean usados
+//         // entidades de categoria y de media
+//         entities:data.entities,
+//         categories:data.result.categories,
+//         search:[]
+//     },
+//     // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
+//         // para buscar
+//     // el  modal recibe media, 
+//     // reducer 2
+//     modal:{
+//         visibility:false,
+//         mediaId:null
+
+//     }
+// };
 
 // el create store recibe 3 parametros:
     // reducer,initial state,enhancer
@@ -59,7 +65,7 @@ const store =createStore(
     // reducer,
     reducer,
     // initial
-    initialState,
+    map(),
     // enhancer
     window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 
