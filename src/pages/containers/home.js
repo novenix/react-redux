@@ -58,6 +58,7 @@ class Home extends Component{
                         handleOpenModal={this.handleOpenModal}
                         // envia a las categories:
                         search={this.props.search}
+                        isLoading={this.props.isLoading}
                         />
                     
                     
@@ -124,7 +125,9 @@ function mapStateToProps(state,props){
         // empieza como un arreglo vacio
         search:searchResults,
         // traer datos del modal
-        modal:state.get('modal')
+        modal:state.get('modal'),
+        // cargando busqueda
+        isLoading:state.get('isLoading').get('active')
     }
    
 }

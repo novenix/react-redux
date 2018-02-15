@@ -14,6 +14,11 @@ function Categories(props){
         {/* recibe los elementos filtrados buscados */}
         {/* por cada elemento iterado retorna un componente media */}
         <Search/>
+        {/* validar el is loading */}
+        {
+            props.isLoading&&
+            <p>Realizando tu búsqueda</p>
+        }
         {
             props.search.map((item)=>{
                 // retorna ese item, debe pasarle key de cada item

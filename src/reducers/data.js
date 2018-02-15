@@ -3,6 +3,8 @@
 import schema from '../schemas/index'
 // form js: pasa cualquier objeto js a immutable
 import {fromJS} from 'immutable';
+// importa directamente las acciones de actionTypes
+import {SEARCH_ENTITIES} from '../actionTypes/index'
 // manejar el estado inicial dentro de cada reducer
 // llama a from js de immutable
 const initialState=fromJS({
@@ -31,7 +33,7 @@ function data(state=initialState,action){
     // type es parametro obligatorio en accion
     switch (action.type){
         // MANEJAR LA ACCION SEARCH VIDEO
-        case 'SEARCH_ENTITIES':{            
+        case SEARCH_ENTITIES:{            
             // como el metodo es inmutable
             // el query es el texto que está llegando de la busqueda
             //     // action.payload.query

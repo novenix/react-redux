@@ -1,7 +1,7 @@
 // importar para datos unmutables
 // fromJS :cualquier cosa de js a inmutable
 import {fromJS} from 'immutable';
-
+import{OPEN_MODAL,CLOSE_MODAL}from '../actionTypes/index'
 // reducer 2, recibe el estado inicial
 // llama a from js de immutable 
 const initialState=fromJS({   
@@ -19,14 +19,14 @@ function Modal (state=initialState,action){
     // acciones para manejar el estado
     
     switch(action.type){
-        case 'OPEN_MODAL':
+        case OPEN_MODAL:
             // con set solo se puede modificar 1 cosa,
             // /usar merge
             return state.merge({
                 visibility:true,
                 mediaId:action.payload.mediaId,
             });
-        case 'CLOSE_MODAL':
+        case CLOSE_MODAL:
             return state.set('visibility',false);
         default:
             return state

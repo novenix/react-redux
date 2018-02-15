@@ -14,7 +14,8 @@ import Home from '../pages/containers/home'
 //  import data from './../api.json'
 
 // importar el centro de todas las cosas
-import {createStore}from 'redux'
+// apply middleware para aplicar el middleware logger
+import {createStore,applyMiddleware, compose}from 'redux'
 // importar high order component: sirve de suscribe
 // privider, poner data a la app
 import {Provider}from 'react-redux'
@@ -22,41 +23,39 @@ import {Provider}from 'react-redux'
 import reducer from '../reducers/index'
 // funcion mapas inmutables,(mapa as pmap) para que lo tome como funcion
 import {Map as map} from 'immutable'
+// funcion logger para saber que se está haciendo
+import logger from 'redux-logger'
+// usar multiples middlewares
+import {composeWithDevTools} from 'redux-devtools-extension'
+// importar thunk para funciones asincronas
+import thunk from 'redux-thunk'
 
 
-import Categories from '../categories/components/categories';
-
-// que hay dentro de la data ya normalizada
-// console.log(data)
-
-// la data sin normalizar
-// console.log(data);
-
-
-
-// definir modelo de datos y como los va a consumir
-// const initialState={
-//     // puede obtener todos los datosy 
-//     // reducer 1
-//     data: {
-//         // lo que corresponde a la api, lo que llega de la datra
-//         // ...data,
-//         // crear campos a los lugares para que sean usados
-//         // entidades de categoria y de media
-//         entities:data.entities,
-//         categories:data.result.categories,
-//         search:[]
-//     },
-//     // tambien está en el estado inicial la busqueda, se le añade en el reducers de data
-//         // para buscar
-//     // el  modal recibe media, 
-//     // reducer 2
-//     modal:{
-//         visibility:false,
-//         mediaId:null
-
+// middleware de redux para crear un feature extra
+// hacer un logger, 
+// recibe dispatch y getState
+// function logger({getState,dispatch}){
+//     // la primera funcion recibe metodo para despachar el siguiente middleware
+//     return (next)=>{
+//         // 
+//         return(action)=>{
+//             console.log('vamos a enviar la accio',{action})
+//             // regresa la ejecucin
+//             const value= next(action)
+//             // despues de la aplicacion
+//             console.log('este es mi nuevo estado',getState().toJS())
+//             return value;
+//         }
 //     }
-// };
+// }
+// const logger=({getState,dispatch})=>next=>action=>{
+//     console.log('vamos a enviar la accio',{action})
+//             // regresa la ejecucin
+//             const value= next(action)
+//             // despues de la aplicacion
+//             console.log('este es mi nuevo estado',getState().toJS())
+//             return value;
+// }
 
 // el create store recibe 3 parametros:
     // reducer,initial state,enhancer
@@ -66,8 +65,13 @@ const store =createStore(
     reducer,
     // initial
     map(),
-    // enhancer
-    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+    composeWithDevTools(
+        // enhancer
+        // se va a usar con el middleware(logger)
+        applyMiddleware(logger,thunk)
+    )
+
+    // window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
 
 )
 // console.log(store.getState())

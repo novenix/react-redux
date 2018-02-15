@@ -64,13 +64,56 @@ class Media extends PureComponent{
         //         border:'1px solid red'
         //     }
         // }
+        // forma mia
+        // <div  className="Media-cover" onClick={this.handleClick} >
+        //     {/* className="Media" className="Media:hover" */}
+        //         <div>
+        //             <div className="Media-image" >
+        //                 <img
+        //                 //viene del cdd
+        //                 //lamar la ruta de la imagen del componente
+        //                 src={this.props.cover}
+        //                 alt="" 
+        //                 width={260}
+        //                 height={135}
+        //                  />
+        //             </div>
+        //             {/* center aling hace arte de la descarga de materialize */}
+        //             {/* //aqui se consume el valor de title , que se envió desde el dom */}
+        //             {/* this.props.title asi nos aseguramos que venga el valor de afuera*/}
+        //              <div className="Media-title" >{this.props.title}</div>
+
+        //             {/* state si es mutable, a diferente de props(propiedades de componente) */}
+        //             {/* si vamos a usar state se pone this.state.author */}
+        //             <div className="center align"> 
+        //                 <div className="Media-author"> {this.props.author}</div>
+        //             </div>
+                       
+                       
+                     
+        //             {/* aqui hace parte casi todo de la libreria de materialize descargada en index.html 
+        //             <div className="card-action center align">
+        //                 <a className="waves-effect waves-light btn" href="#">{this.props.btonTxt}</a>
+        //             </div> */}
+                    
+        //         </div>
+        //     </div>
+        // forma Leonidas
+        // <div className="Media" onClick={this.handleClick}>
+        //         <div className="Media-cover">
+        //             <img
+        //                 src={this.props.cover}
+        //                 alt=""
+        //                 width={260}
+        //                 height={160}
+        //                 className="Media-image"
+        //             />
+        //             <h3 className="Media-title">{this.props.title}</h3>
+        //             <p className="Media-author">{this.props.author}</p>
+        //         </div>
+        //     </div>
         return(
-            // se puede hacer estilos en linea
-            // <div style={styles.container}>
-            //tambien se puede usar el css
-            // para enlazar el evento que se quiere hacer se hace con onClick={this.handleClicl(manejador)}
-            //<div>
-            <div  className="Media-cover" onClick={this.handleClick} >
+           <div  className="Media-cover" onClick={this.handleClick} >
             {/* className="Media" className="Media:hover" */}
                 <div>
                     <div className="Media-image" >
@@ -103,7 +146,7 @@ class Media extends PureComponent{
                     
                 </div>
             </div>
-            // </div>
+           
         )
     }
 }

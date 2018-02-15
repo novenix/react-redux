@@ -16,7 +16,7 @@ class SearchContainer extends Component{
         console.log(this.input.value,'submit')
         // crear la accion para buscar video
         // se le envia la accion, type por minimo
-        this.props.actions.searchEntities(this.input.value)
+        this.props.actions.searchAsyncEntities(this.input.value);
     }
     // funcion que recibe el elemento html como parametro
     // lo maeja
